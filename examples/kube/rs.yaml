@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: ifedyanin-rs-demo
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: ifedyanin-app
+  template:
+    metadata:
+      labels:
+        app: ifedyanin-app
+    spec:
+      containers:
+        - name: ifedyanin-app
+          image: fedyiv/otus_architect_homework_1:v1
+          ports:
+            - containerPort: 8080

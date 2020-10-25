@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fedyiv-otus-hw1-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: fedyiv-otus-hw1-app
+  template:
+    metadata:
+      labels:
+        app: fedyiv-otus-hw1-app
+    spec:
+      containers:
+        - name: fedyiva-otus-hw1-container
+          image: fedyiv/otus_architect_homework_1:v2
+          imagePullPolicy: Always
+          ports:
+            - name: web
+              containerPort: 8080
+          livenessProbe:
+            httpGet:
+              port: 8080
+              path: /version
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 2
+          readinessProbe:
+            httpGet:
+              port: 8080
+              path: /health
+            initialDelaySeconds: 10
+            periodSeconds: 5

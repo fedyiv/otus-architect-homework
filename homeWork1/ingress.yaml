@@ -1,0 +1,15 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: fedyiv-otus-hw1-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  rules:
+    - host: arch.homework
+      http:
+        paths:
+          - path: /otusapp/fedyiv(/|$)(.*)
+            backend:
+              serviceName: fedyiv-otus-hw1-service
+              servicePort: 9000

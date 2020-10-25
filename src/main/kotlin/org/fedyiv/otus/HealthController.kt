@@ -10,4 +10,14 @@ class HealthController {
     fun getHealth():String {
         return " {\"status\": \"OK\"}"
     }
+
+    @GetMapping(value = ["/version"], produces = ["application/json"])
+    fun getVersion():String {
+        return " {\"version\": \"1\"}"
+    }
+
+    @GetMapping()
+    fun hello():String {
+        return "{\"Hello\"}"
+    }
 }
