@@ -50,7 +50,7 @@ openApiGenerate {
 
 dependencyManagement {
     imports {
-        mavenBom("org.springframework.boot:spring-boot-dependencies:2.1.0.RELEASE") {
+        mavenBom("org.springframework.boot:spring-boot-dependencies:2.2.11.RELEASE") {
             bomProperty("kotlin.version", "$kotlin_version")
         }
     }
