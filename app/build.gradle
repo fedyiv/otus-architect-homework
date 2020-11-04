@@ -1,0 +1,19 @@
+plugins {
+    id "org.jetbrains.kotlin.jvm"
+    id "org.jetbrains.kotlin.plugin.spring"
+    id 'org.springframework.boot'
+    id "io.spring.dependency-management"
+}
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(":openapi")
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version" // Required for Kotlin integration
+    compile "org.springframework.boot:spring-boot-starter-web"
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
