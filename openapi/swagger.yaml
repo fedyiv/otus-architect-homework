@@ -5,16 +5,56 @@ info:
   version: "1.0.0"
   title: User Service
   contact:
-    email: schetinnikov@gmail.com
-servers:
-  - description: Example Server
-    url: http://example.domain/api/v1/
-  - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/otus55/users/1.0.0
+    email: ivan.a.fedyanin@gmail.com
+#servers:
+#  - description: Example Server
+#    url: http://example.domain/api/v1/
+#  - description: SwaggerHub API Auto Mocking
+#    url: https://virtserver.swaggerhub.com/otus55/users/1.0.0
 tags:
   - name: user
     description: Operations about user
+  - name: health
+    description: health information
+  - name: version
+    description: version information
 paths:
+  /health:
+    get:
+      tags:
+        - health
+      operationId: getHealth
+      responses:
+        '200':
+          description: user response
+          content:
+            application/json:
+              schema:
+                  type: string
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /version:
+    get:
+      tags:
+        - health
+      operationId: getVersion
+      responses:
+        '200':
+          description: user response
+          content:
+            application/json:
+              schema:
+                  type: string
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /user:
     post:
       tags:
