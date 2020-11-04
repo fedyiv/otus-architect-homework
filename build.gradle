@@ -9,5 +9,7 @@ plugins {
 group 'org.fedyiv'
 version '1.0-SNAPSHOT'
 
+subprojects {
+    ext.kotlin_version = "1.4.10"
 
-ext.kotlin_version="1.4.10"
+}

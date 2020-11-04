@@ -17,3 +17,4 @@ dependencies {
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
+sourceCompatibility = 11
