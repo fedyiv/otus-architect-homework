@@ -1,15 +1,6 @@
 pluginManagement {
     repositories {
-        //TODO: find unneeded repos and remove them
-       // jcenter()
-       // maven { url "https://mvnrepository.com/repos/gradle-plugins" }
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
-    //    jcenter()
-  //      mavenCentral()
-
-
+        maven { url "https://plugins.gradle.org/m2/" }
     }
 }
 

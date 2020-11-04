@@ -1,5 +1,4 @@
 plugins {
-    //TODO: move kotlin version  to parent project
     id 'java'
     id "org.jetbrains.kotlin.jvm"
     id "org.jetbrains.kotlin.plugin.spring"
