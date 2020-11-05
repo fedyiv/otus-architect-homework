@@ -1,25 +1,49 @@
 package org.fedyiv.otus.web.services
 
 import org.fedyiv.otus.api.UserApiService
+import org.fedyiv.otus.dao.UserRepository
+import org.fedyiv.otus.dao.model.toWebModel
 import org.fedyiv.otus.model.User
 import org.springframework.stereotype.Service
 
 
 @Service
-class UserApiServiceImpl : UserApiService {
-    override fun createUser(user: User) {
-        TODO("Not yet implemented")
+class UserApiServiceImpl(private val repository: UserRepository) : UserApiService {
+
+
+    override fun createUser(user: User) : User {
+
+        return repository.save(
+            org.fedyiv.otus.dao.model.User(
+                username = user.username,
+                firstName = user.firstName,
+                lastName = user.lastName,
+                email = user.email,
+                phone = user.phone
+            )
+        ).toWebModel()
+
     }
 
     override fun deleteUser(userId: Long) {
-        TODO("Not yet implemented")
+        repository.deleteById(userId)
     }
 
     override fun findUserById(userId: Long): User {
-        TODO("Not yet implemented")
+        return repository.findById(userId).get().toWebModel()
     }
 
     override fun updateUser(userId: Long, user: User?) {
-        TODO("Not yet implemented")
+
+        repository.save(
+            org.fedyiv.otus.dao.model.User(
+                id = userId,
+                username = user!!.username,
+                firstName = user!!.firstName,
+                lastName = user!!.lastName,
+                email = user!!.email,
+                phone = user!!.phone
+            )
+        )
     }
 }
