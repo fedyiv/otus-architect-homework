@@ -82,7 +82,15 @@ tolerations: []
 affinity: {}
 
 externalPostgres:
-  url: jdbc:postgresql://my-release-postgresql.default.svc.cluster.local:5432/postgres
   database:
     url: postgres
   password: UDhxOXM3MmVKTw==
+
+
+postgresql:
+  enabled: true
+  postgresqlUsername: postgres
+  postgresqlPassword: P8q9s72eJO
+  postgresqlDatabase: postgres
+  service:
+    port: "5432"

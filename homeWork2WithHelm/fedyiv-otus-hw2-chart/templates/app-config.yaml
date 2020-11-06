@@ -3,5 +3,5 @@ kind: ConfigMap
 metadata:
   name: hw2-config
 data:
-  SPRING_DATASOURCE_URL: "{{ .Values.externalPostgres.url }}"
+  SPRING_DATASOURCE_URL:  {{ printf "jdbc:postgresql://%s:5432/postgres" (include "postgresql.fullname" .) }}
   SPRING_DATABASE_URL: "{{ .Values.externalPostgres.database.url }}"
