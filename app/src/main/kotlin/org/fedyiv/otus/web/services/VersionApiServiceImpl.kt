@@ -6,6 +6,6 @@ import org.springframework.stereotype.Service
 @Service
 class VersionApiServiceImpl:VersionApiService {
     override fun getVersion(): String {
-        return " {\"version\": \"1\"}"
+        return " {\"version\": \"2\"}"
     }
 }
