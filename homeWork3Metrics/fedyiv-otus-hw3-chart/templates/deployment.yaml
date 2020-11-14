@@ -50,20 +50,20 @@ spec:
                   name: hw3-secret
                   key: SPRING_DATASOURCE_PASSWORD
           ports:
-            - name: web
+            - name: http
               containerPort: 8080
               protocol: TCP
           livenessProbe:
             httpGet:
               path: /version
-              port: web
+              port: http
             initialDelaySeconds: 10
             periodSeconds: 5
             timeoutSeconds: 2
           readinessProbe:
             httpGet:
               path: /health
-              port: web
+              port: http
             initialDelaySeconds: 10
             periodSeconds: 5
           resources:

@@ -8,8 +8,8 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.port }}
-      targetPort: web
+      targetPort: http
       protocol: TCP
-      name: http
+      name: web
   selector:
     {{- include "fedyiv-otus-hw3-chart.selectorLabels" . | nindent 4 }}
