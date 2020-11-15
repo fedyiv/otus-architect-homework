@@ -9,6 +9,7 @@ helm install prom prometheus-community/kube-prometheus-stack -f prometheus.yaml 
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm repo update
 helm install nginx ingress-nginx/ingress-nginx -f nginx-ingress.yaml --atomic
+helm install prom-postgres-exporter prometheus-community/prometheus-postgres-exporter
 ```
 
 An example Ingress that makes use of the controller:
