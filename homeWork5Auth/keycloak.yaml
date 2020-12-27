@@ -1,0 +1,10 @@
+auth:
+  adminUser: admin
+  adminPassword: password
+
+ingress:
+  enabled: true
+  hostname: arch.homework
+#  extraHosts:
+#    - name: arch.homework
+#      path:
