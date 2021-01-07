@@ -23,36 +23,18 @@ kubectl port-forward service/prom-grafana 9000:80
 #View Prometheus
 kubectl port-forward service/prom-kube-prometheus-stack-prometheus 9090
 ```
-# Keycloak setup
+# Auth system and keycloak setup
 ```shell script
 kubectl config set-context --current --namespace=default
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm install keycloak bitnami/keycloak -f keycloak.yaml
-```
 
-An example Ingress that makes use of the controller:
-```yaml
-  apiVersion: networking.k8s.io/v1beta1
-  kind: Ingress
-  metadata:
-    annotations:
-      kubernetes.io/ingress.class: nginx
-    name: example
-    namespace: foo
-  spec:
-    rules:
-      - host: www.example.com
-        http:
-          paths:
-            - backend:
-                serviceName: exampleService
-                servicePort: 80
-              path: /
+kubectl apply -f oauth2-proxy/oauth-proxy.yaml 
+kubectl apply -f oauth2-proxy/oauth-ingress.yaml 
 ```
 
 
-
-# Installation
+# Installation of the app
 ```shell script
 kubectl config set-context --current --namespace=default
 helm dependency update ./fedyiv-otus-hw5-chart
@@ -61,3 +43,8 @@ helm install myapp fedyiv-otus-hw5-chart/
 ```
 # Testing
 Use **User Service.postman_collection.json** to test the service
+
+# WIP
+
+TODO: https://stackoverflow.com/questions/59773062/nginx-ingress-external-oauth-with-azure-active-directory
+looks like external oauth proxy is needed

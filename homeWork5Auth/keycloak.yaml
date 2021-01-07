@@ -8,3 +8,6 @@ ingress:
 #  extraHosts:
 #    - name: arch.homework
 #      path:
+
+image:
+  debug: true

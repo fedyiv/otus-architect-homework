@@ -5,6 +5,7 @@ kubectl create namespace monitoring
 kubectl config set-context --current --namespace=monitoring
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo add stable https://charts.helm.sh/stable
+kubectl apply -f grafana.yaml
 helm install prom prometheus-community/kube-prometheus-stack -f prometheus.yaml --atomic
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm repo update
@@ -19,7 +20,8 @@ An example Ingress that makes use of the controller:
   metadata:
     annotations:
       kubernetes.io/ingress.class: nginx
-    name: example
+    name: helm install myapp fedyiv-otus-hw3-chart/ --atomic
+example
     namespace: foo
   spec:
     rules:
@@ -38,7 +40,7 @@ An example Ingress that makes use of the controller:
 ```shell script
 
 helm dependency update ./fedyiv-otus-hw3-chart
-helm install myapp fedyiv-otus-hw3-chart/
+helm install myapp fedyiv-otus-hw3-chart/ --atomic
 helm repo update
 #View Grafana
 kubectl port-forward service/prom-grafana 9000:80
