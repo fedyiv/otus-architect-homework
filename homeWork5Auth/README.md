@@ -1,7 +1,7 @@
 # Solution architecture
 
-![Component diagram](Component Diagram.png)
-![Sequence diagram](Sequence Diagram.png)
+![Component diagram](./Component Diagram.png)
+![Sequence diagram](./Sequence Diagram.png)
 # Ingress
 ```shell script
 kubectl config set-context --current --namespace=default
