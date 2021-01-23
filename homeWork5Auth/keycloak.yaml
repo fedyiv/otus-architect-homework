@@ -6,8 +6,9 @@ ingress:
   enabled: true
   hostname: arch.homework
 #  extraHosts:
-#    - name: arch.homework
-#      path:
+ #   - name: arch.homework
+  #    path: /auth
+
 
 image:
   debug: true

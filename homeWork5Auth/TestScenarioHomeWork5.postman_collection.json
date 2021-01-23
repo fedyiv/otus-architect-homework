@@ -1,0 +1,664 @@
+{
+	"info": {
+		"_postman_id": "b8d8059e-13cb-4462-9092-b7775098b612",
+		"name": "TestScenarioHomeWork5",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Attempt to access user1 without login",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const cookieJar = pm.cookies.jar();",
+							"cookieJar.clear(pm.collectionVariables.get('baseUrl').replace(/(^\\w+:|^)\\/\\//, ''), function(error) {console.log(error)});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"followOriginalHttpMethod": false
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"1\",\n    \"username\": \"user1\",\n    \"firstName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"email\": \"user1@test.email\",\n    \"phone\": \"<phone>\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/user",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get token for user1. Step 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"responseHTML = cheerio(pm.response.text());",
+							"var loginURL= responseHTML.find('[id=\"kc-form-login\"]').attr('action').replace(/^\"(.*)\"$/, '$1');",
+							"pm.collectionVariables.set('loginPost', loginURL);",
+							"",
+							"console.log(loginURL);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const cookieJar = pm.cookies.jar();",
+							"const domain = pm.collectionVariables.get('baseUrl').replace(/(^\\w+:|^)\\/\\//, '').replace( /(\\/.*)/,'');",
+							"console.log('Clearing cookies for domain ' + domain)",
+							"cookieJar.clear(domain, function(error) {console.log(error)});",
+							"console.log('Cleared cookeies')"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"followRedirects": true,
+				"followAuthorizationHeader": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/version",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"version"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Get version",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/version",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"version"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Sun, 17 Jan 2021 18:51:54 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "17"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Strict-Transport-Security",
+							"value": "max-age=15724800; includeSubDomains"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"version\": \"2\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Get token for user1. Step 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var user1_auth_session_id_legacy= pm.cookies.get('AUTH_SESSION_ID_LEGACY')",
+							"var user1_keycloak_session_legacy= pm.cookies.get('KEYCLOAK_SESSION_LEGACY')",
+							"var user1_keycloak_identity_legacy= pm.cookies.get('KEYCLOAK_IDENTITY_LEGACY')",
+							"",
+							"pm.collectionVariables.set('user1_auth_session_id_legacy', user1_auth_session_id_legacy);",
+							"pm.collectionVariables.set('user1_keycloak_session_legacy', user1_keycloak_session_legacy);",
+							"pm.collectionVariables.set('user1_keycloak_identity_legacy', user1_keycloak_identity_legacy);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "test1",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "email",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "client_id",
+							"value": "test-client",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "client_secret",
+							"value": "1e10dd33-837a-4efc-a21d-b93ac7294abb",
+							"type": "text",
+							"disabled": true
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{loginPost}}",
+					"host": [
+						"{{loginPost}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create user1 with authorization",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const cookieJar = pm.cookies.jar();",
+							"const URL = \"https://arch.homework\";",
+							"// create a cookie",
+							"cookieJar.set(URL, 'AUTH_SESSION_ID_LEGACY', pm.collectionVariables.get('user1_auth_session_id_legacy'), function(error, cookie) {console.log(error);",
+							"console.log(cookie);}) ;",
+							"cookieJar.set(URL, 'KEYCLOAK_SESSION_LEGACY', pm.collectionVariables.get('user1_keycloak_session_legacy'), function(error, cookie) {console.log(error);",
+							"console.log(cookie);});",
+							"cookieJar.set(URL, 'KEYCLOAK_IDENTITY_LEGACY', pm.collectionVariables.get('user1_keycloak_identity_legacy'), function(error, cookie) {console.log(error);",
+							"console.log(cookie);});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"followOriginalHttpMethod": false
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"1\",\n    \"username\": \"user1\",\n    \"firstName\": \"{{$guid}}\",\n    \"lastName\": \"{{$guid}}\",\n    \"email\": \"user1@user.email\",\n    \"phone\": \"<phone>\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/user",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "logout user1",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Auth-Request-Redirect",
+						"value": " https://arch.homework/auth/realms/fedyiv-otus/protocol/openid-connect/logout",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{domainBaseUrl}}oauth2/sign_out",
+					"host": [
+						"{{domainBaseUrl}}oauth2"
+					],
+					"path": [
+						"sign_out"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get token for user2. Step 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"responseHTML = cheerio(pm.response.text());",
+							"var loginURL= responseHTML.find('[id=\"kc-form-login\"]').attr('action').replace(/^\"(.*)\"$/, '$1');",
+							"pm.collectionVariables.set('loginPost', loginURL);",
+							"",
+							"console.log(loginURL);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const cookieJar = pm.cookies.jar();",
+							"const domain = pm.collectionVariables.get('baseUrl').replace(/(^\\w+:|^)\\/\\//, '').replace( /(\\/.*)/,'');",
+							"console.log('Clearing cookies for domain ' + domain)",
+							"cookieJar.clear(domain, function(error) { console.log(error)});",
+							"console.log('Cleared cookeies')",
+							"",
+							"//cookieJar.set(domain, 's', '', function(error, cookie) {console.log(error);});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"followAuthorizationHeader": true,
+				"followRedirects": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/version",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"version"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Get version",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/version",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"version"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Sun, 17 Jan 2021 18:51:54 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "17"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Strict-Transport-Security",
+							"value": "max-age=15724800; includeSubDomains"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"version\": \"2\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Get token for user2. Step 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var user2_auth_session_id_legacy= pm.cookies.get('AUTH_SESSION_ID_LEGACY')",
+							"var user2_keycloak_session_legacy= pm.cookies.get('KEYCLOAK_SESSION_LEGACY')",
+							"var user2_keycloak_identity_legacy= pm.cookies.get('KEYCLOAK_IDENTITY_LEGACY')",
+							"",
+							"pm.collectionVariables.set('user1_auth_session_id_legacy', user2_auth_session_id_legacy);",
+							"pm.collectionVariables.set('user1_keycloak_session_legacy', user2_keycloak_session_legacy);",
+							"pm.collectionVariables.set('user1_keycloak_identity_legacy', user2_keycloak_identity_legacy);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "test2",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "email",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "client_id",
+							"value": "test-client",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "client_secret",
+							"value": "1e10dd33-837a-4efc-a21d-b93ac7294abb",
+							"type": "text",
+							"disabled": true
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{loginPost}}",
+					"host": [
+						"{{loginPost}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Access user2 with authorization",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const cookieJar = pm.cookies.jar();",
+							"const URL = \"http://arch.homework\";",
+							"// create a cookie",
+							"cookieJar.set(URL, 'AUTH_SESSION_ID_LEGACY', pm.collectionVariables.get('user2_auth_session_id_legacy'), function(error, cookie) {console.log(error);",
+							"console.log(cookie);}) ;",
+							"cookieJar.set(URL, 'KEYCLOAK_SESSION_LEGACY', pm.collectionVariables.get('user2_keycloak_session_legacy'), function(error, cookie) {console.log(error);",
+							"console.log(cookie);});",
+							"cookieJar.set(URL, 'KEYCLOAK_IDENTITY_LEGACY', pm.collectionVariables.get('user2_keycloak_identity_legacy'), function(error, cookie) {console.log(error);",
+							"console.log(cookie);});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"followOriginalHttpMethod": false
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"1000\",\n    \"username\": \"user2\",\n    \"firstName\": \"{{$guid}}\",\n    \"lastName\": \"{{$guid}}\",\n    \"email\": \"user2@user.email\",\n    \"phone\": \"<phone>\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/user",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Access user1 with authorization for user2",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const cookieJar = pm.cookies.jar();",
+							"const URL = \"http://arch.homework\";",
+							"// create a cookie",
+							"cookieJar.set(URL, 'AUTH_SESSION_ID_LEGACY', pm.collectionVariables.get('user2_auth_session_id_legacy'), function(error, cookie) {console.log(error);",
+							"console.log(cookie);}) ;",
+							"cookieJar.set(URL, 'KEYCLOAK_SESSION_LEGACY', pm.collectionVariables.get('user2_keycloak_session_legacy'), function(error, cookie) {console.log(error);",
+							"console.log(cookie);});",
+							"cookieJar.set(URL, 'KEYCLOAK_IDENTITY_LEGACY', pm.collectionVariables.get('user2_keycloak_identity_legacy'), function(error, cookie) {console.log(error);",
+							"console.log(cookie);});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(500);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"followOriginalHttpMethod": false
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/user/1",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"user",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"tests[\"[INFO] Request: \" + JSON.stringify(request)] = true;",
+					"tests[\"[INFO] Response: \" + responseBody] = true;"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "{{domainBaseUrl}}otusapp/fedyiv"
+		},
+		{
+			"key": "AccessTokenUser1",
+			"value": ""
+		},
+		{
+			"key": "loginPost",
+			"value": "to_be_replaced"
+		},
+		{
+			"key": "user1_auth_session_id_legacy",
+			"value": ""
+		},
+		{
+			"key": "user1_keycloak_session_legacy",
+			"value": ""
+		},
+		{
+			"key": "user1_keycloak_identity_legacy",
+			"value": ""
+		},
+		{
+			"key": "user2_auth_session_id_legacy",
+			"value": ""
+		},
+		{
+			"key": "user2_keycloak_session_legacy",
+			"value": ""
+		},
+		{
+			"key": "user2_keycloak_identity_legacy",
+			"value": ""
+		},
+		{
+			"key": "domainBaseUrl",
+			"value": "https://arch.homework/"
+		}
+	]
+}

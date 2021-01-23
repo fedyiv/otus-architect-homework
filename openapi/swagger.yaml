@@ -55,6 +55,22 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /debug:
+    get:
+      tags:
+        - debug
+      summary: provide debug information
+      parameters:
+        - $ref: '#/components/parameters/authNUserEmailParam'
+      responses:
+        '200':
+          description: debug response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Debug'
+        default:
+          description: successful operation
   /user:
     post:
       tags:
@@ -62,6 +78,8 @@ paths:
       summary: Create user
       description: This can only be done by the logged in user.
       operationId: createUser
+      parameters:
+        - $ref: '#/components/parameters/authNUserEmailParam'
       responses:
         '200':
           description: user response
@@ -89,6 +107,7 @@ paths:
         required: true
   /user/{userId}:
     parameters:
+      - $ref: '#/components/parameters/authNUserEmailParam'
       - name: userId
         in: path
         description: ID of user
@@ -108,6 +127,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
+        '403':
+          description: Access to the requested resource is forbidden
         default:
           description: unexpected error
           content:
@@ -119,9 +140,13 @@ paths:
         - user
       description: deletes a single user based on the ID supplied
       operationId: deleteUser
+      parameters:
+        - $ref: '#/components/parameters/authNUserEmailParam'
       responses:
         '204':
           description: user deleted
+        '403':
+          description: Access to the requested resource is forbidden
         default:
           description: unexpected error
           content:
@@ -133,6 +158,8 @@ paths:
         - user
       description: Update user with User ID supplied
       operationId: updateUser
+      parameters:
+        - $ref: '#/components/parameters/authNUserEmailParam'
       requestBody:
         content:
           application/json:
@@ -150,6 +177,8 @@ paths:
       responses:
         '200':
           description: user updated
+        '403':
+          description: Access to the requested resource is forbidden
         default:
           description: unexpected error
           content:
@@ -159,6 +188,11 @@ paths:
 
 components:
   schemas:
+    Debug:
+      type: object
+      properties:
+        xAuthRequestEmail:
+          type: string
     User:
       type: object
       properties:
@@ -200,3 +234,11 @@ components:
               $ref: '#/components/schemas/User'
       description: List of user object
       required: true
+
+  parameters:
+    authNUserEmailParam:
+      in: header
+      name: X-Auth-Request-Email
+      schema:
+        type: string
+      required: false

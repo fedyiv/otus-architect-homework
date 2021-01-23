@@ -11,7 +11,10 @@ import org.springframework.stereotype.Service
 class UserApiServiceImpl(private val repository: UserRepository) : UserApiService {
 
 
-    override fun createUser(user: User) : User {
+    override fun createUser(user: User, xminusAuthMinusRequestMinusEmail: String?): User {
+
+        if(!xminusAuthMinusRequestMinusEmail.equals(user.email))
+            throw IllegalAccessError("Unauthorized")
 
         return repository.save(
             org.fedyiv.otus.dao.model.User(
@@ -25,15 +28,26 @@ class UserApiServiceImpl(private val repository: UserRepository) : UserApiServic
 
     }
 
-    override fun deleteUser(userId: Long) {
+    override fun deleteUser(userId: Long, xminusAuthMinusRequestMinusEmail: String?) {
+
+        if(!xminusAuthMinusRequestMinusEmail.equals(repository.findById(userId).get().email))
+            throw IllegalAccessError("Unauthorized")
+
         repository.deleteById(userId)
     }
 
-    override fun findUserById(userId: Long): User {
-        return repository.findById(userId).get().toWebModel()
+    override fun findUserById(userId: Long, xminusAuthMinusRequestMinusEmail: String?): User {
+        val user = repository.findById(userId).get()
+        if(!xminusAuthMinusRequestMinusEmail.equals(user.email))
+            throw IllegalAccessError("Unauthorized")
+        return user.toWebModel()
     }
 
-    override fun updateUser(userId: Long, user: User?) {
+    override fun updateUser(userId: Long, xminusAuthMinusRequestMinusEmail: String?, user: User?) {
+
+        val existingUser = repository.findById(userId).get()
+        if(!xminusAuthMinusRequestMinusEmail.equals(existingUser.email))
+            throw IllegalAccessError("Unauthorized")
 
         repository.save(
             org.fedyiv.otus.dao.model.User(

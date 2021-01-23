@@ -6,7 +6,7 @@ helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm repo update
 helm install nginx ingress-nginx/ingress-nginx -f nginx-ingress.yaml --atomic
 ```
-# Monitoring setup
+# Monitoring setup - SKIP THIS SECTION
 ```shell script
 
 kubectl create namespace monitoring
@@ -30,9 +30,12 @@ helm repo add bitnami https://charts.bitnami.com/bitnami
 helm install keycloak bitnami/keycloak -f keycloak.yaml
 
 kubectl apply -f oauth2-proxy/oauth-proxy.yaml 
-kubectl apply -f oauth2-proxy/oauth-ingress.yaml 
-```
+kubectl apply -f oauth2-proxy/oauth-ingress.yaml
 
+#import keycloak realm
+# Important! Wait until keycloak initializes. And then proceed further
+./import_keycloak_configuration.sh 
+```
 
 # Installation of the app
 ```shell script
@@ -42,9 +45,6 @@ helm install myapp fedyiv-otus-hw5-chart/
 
 ```
 # Testing
-Use **User Service.postman_collection.json** to test the service
-
-# WIP
-
-TODO: https://stackoverflow.com/questions/59773062/nginx-ingress-external-oauth-with-azure-active-directory
-looks like external oauth proxy is needed
+```bash
+newman run -k TestScenarioHomeWork5.postman_collection.json
+```
