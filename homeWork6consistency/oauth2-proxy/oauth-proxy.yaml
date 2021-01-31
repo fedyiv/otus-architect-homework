@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    k8s-app: oauth2-proxy
+  name: oauth2-proxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: oauth2-proxy
+  template:
+    metadata:
+      labels:
+        k8s-app: oauth2-proxy
+    spec:
+      containers:
+        - args:
+            - --cookie-name=s
+            - --set-xauthrequest=true
+            - --set-authorization-header=true
+            - --pass-authorization-header=true
+            - --pass-access-token=true
+            - --set-xauthrequest=true
+            - --upstream=file:///dev/null
+            - --http-address=0.0.0.0:4180
+            - --email-domain=*
+            - --provider=keycloak
+            - --client-id=test-client
+            - --client-secret=1e10dd33-837a-4efc-a21d-b93ac7294abb
+            - --login-url=https://arch.homework/auth/realms/fedyiv-otus/protocol/openid-connect/auth
+            - --redeem-url=http://arch.homework/auth/realms/fedyiv-otus/protocol/openid-connect/token
+            - --validate-url=http://arch.homework/auth/realms/fedyiv-otus/protocol/openid-connect/userinfo
+            - --keycloak-group=/users
+            - --scope=email
+            - --whitelist-domain=arch.homework
+          env:
+            - name: OAUTH2_PROXY_CLIENT_ID
+              value: test-client
+            - name: OAUTH2_PROXY_CLIENT_SECRET
+              value:  1e10dd33-837a-4efc-a21d-b93ac7294abb
+            - name: OAUTH2_PROXY_COOKIE_SECRET
+              value: dwH6TfbLDU9ARkWOfskhng==
+            - name: OAUTH2_PROXY_LOGIN_URL
+              value: https://arch.homework/auth/realms/fedyiv-otus/protocol/openid-connect/auth
+          image: quay.io/pusher/oauth2_proxy:latest
+          imagePullPolicy: Always
+          name: oauth2-proxy
+          ports:
+            - containerPort: 4180
+              protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    k8s-app: oauth2-proxy
+  name: oauth2-proxy
+spec:
+  ports:
+    - name: http
+      port: 4180
+      protocol: TCP
+      targetPort: 4180
+  selector:
+    k8s-app: oauth2-proxy
