@@ -15,7 +15,7 @@ include ':OrderService'
 project(':UserService_openapi').projectDir = file('openapi/UserService/')
 project(':OrderService_openapi').projectDir = file('openapi/OrderService/')
 
-project(':UserService').projectDir = file('UserService/')
-project(':OrderService').projectDir = file('OrderService/')
+project(':UserService').projectDir = file('services/UserService/')
+project(':OrderService').projectDir = file('services/OrderService/')
 
 
