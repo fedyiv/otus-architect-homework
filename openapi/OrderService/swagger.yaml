@@ -1,0 +1,174 @@
+openapi: 3.0.0
+info:
+  description: |
+    This is simple client API
+  version: "1.0.0"
+  title: User Service
+  contact:
+    email: ivan.a.fedyanin@gmail.com
+#servers:
+#  - description: Example Server
+#    url: http://example.domain/api/v1/
+#  - description: SwaggerHub API Auto Mocking
+#    url: https://virtserver.swaggerhub.com/otus55/users/1.0.0
+tags:
+  - name: order
+    description: Operations about order
+  - name: health
+    description: health information
+  - name: version
+    description: version information
+paths:
+  /health:
+    get:
+      tags:
+        - health
+      operationId: getHealth
+      responses:
+        '200':
+          description: user response
+          content:
+            application/json:
+              schema:
+                  type: string
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /version:
+    get:
+      tags:
+        - health
+      operationId: getVersion
+      responses:
+        '200':
+          description: user response
+          content:
+            application/json:
+              schema:
+                  type: string
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /debug:
+    get:
+      tags:
+        - debug
+      summary: provide debug information
+      parameters:
+        - $ref: '#/components/parameters/authNUserEmailParam'
+      responses:
+        '200':
+          description: debug response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Debug'
+        default:
+          description: successful operation
+  /order:
+    post:
+      tags:
+        - order
+      summary: Create order
+      description: This can only be done by the logged in user.
+      operationId: createOrder
+      parameters:
+        - $ref: '#/components/parameters/authNUserEmailParam'
+      responses:
+        '200':
+          description: order response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        default:
+          description: successful operation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+            examples:
+              sample-order:
+                summary: Example
+                value:
+                  price: 100
+                  email: 'user1@user.email'
+        description: Created order object
+        required: true
+  /order/{orderId}:
+    parameters:
+      - $ref: '#/components/parameters/authNUserEmailParam'
+      - name: orderId
+        in: path
+        description: orderId
+        required: true
+        schema:
+          type: integer
+          format: int64
+    get:
+      tags:
+        - order
+      description: Returns an order based on a single ID
+      operationId: find order by id
+      responses:
+        '200':
+          description: order response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '403':
+          description: Access to the requested resource is forbidden
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    Debug:
+      type: object
+      properties:
+        xAuthRequestEmail:
+          type: string
+    Order:
+      type: object
+      properties:
+        orderId:
+          type: integer
+          format: int64
+        price:
+          type: integer
+          format: int64
+        email:
+          type: string
+          format: email
+        accountId:
+          type: integer
+          format: int64
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+  parameters:
+    authNUserEmailParam:
+      in: header
+      name: X-Auth-Request-Email
+      schema:
+        type: string
+      required: false

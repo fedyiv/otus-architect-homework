@@ -1,0 +1,57 @@
+plugins {
+    id 'java'
+    id "org.jetbrains.kotlin.jvm"
+    id "org.jetbrains.kotlin.plugin.spring"
+    id 'org.springframework.boot' apply false
+    id "io.spring.dependency-management"
+    id "org.openapi.generator" version "5.0.0-beta"
+}
+
+sourceCompatibility = 11
+
+repositories {
+    mavenCentral()
+}
+
+sourceSets {
+    main.java.srcDirs += 'build/generated/src/main/kotlin'
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    compile "org.jetbrains.kotlin:kotlin-reflect"
+    compile "org.springframework.boot:spring-boot-starter-web"
+    testCompile "org.springframework.boot:spring-boot-starter-test"
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "11"
+    dependsOn tasks.openApiGenerate
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "11"
+}
+
+openApiGenerate {
+    generatorName = "kotlin-spring"
+    inputSpec = "$rootDir/openapi/OrderService/swagger.yaml".toString()
+    outputDir = "$buildDir/generated".toString()
+    apiPackage = "org.fedyiv.otus.api"
+    packageName = "org.fedyiv.otus.api"
+    invokerPackage = "org.fedyiv.otus.invoker"
+    modelPackage = "org.fedyiv.otus.model"
+    configOptions = [
+            dateLibrary          : "java8",
+            gradleBuildFile      : "false",
+            serviceInterface     : "true",
+            serviceImplementation: "false"
+    ]
+}
+
+dependencyManagement {
+    imports {
+        mavenBom("org.springframework.boot:spring-boot-dependencies:2.2.11.RELEASE") {
+            bomProperty("kotlin.version", "$kotlin_version")
+        }
+    }
+}

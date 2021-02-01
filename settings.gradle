@@ -6,10 +6,16 @@ pluginManagement {
 
 rootProject.name = 'otus-architect-homework'
 
-include ':openapi'
-include ':app'
+include ':UserService_openapi'
+include ':OrderService_openapi'
 
-project(':openapi').projectDir = file('openapi/')
-project(':app').projectDir = file('app/')
+include ':UserService'
+include ':OrderService'
+
+project(':UserService_openapi').projectDir = file('openapi/UserService/')
+project(':OrderService_openapi').projectDir = file('openapi/OrderService/')
+
+project(':UserService').projectDir = file('UserService/')
+project(':OrderService').projectDir = file('OrderService/')
 
 
