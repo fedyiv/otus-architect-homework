@@ -44,8 +44,12 @@ kubectl apply -f oauth2-proxy/oauth-ingress.yaml
 # Installation of the app
 ```shell script
 kubectl config set-context --current --namespace=default
-helm dependency update ./fedyiv-otus-hw6-chart
-helm install myapp fedyiv-otus-hw6-chart/
+
+helm dependency update ./fedyiv-otus-user-service-hw6-chart
+helm dependency update ./fedyiv-otus-order-service-hw6-chart
+
+helm install user-service fedyiv-otus-user-service-hw6-chart/ --atomic
+helm install order-service fedyiv-otus-order-service-hw6-chart/ --atomic
 
 ```
 # Testing

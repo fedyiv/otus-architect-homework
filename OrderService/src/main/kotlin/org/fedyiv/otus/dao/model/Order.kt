@@ -19,5 +19,6 @@ fun Order.toWebModel(): org.fedyiv.otus.model.Order =
     org.fedyiv.otus.model.Order(
         orderId = this.orderId,
         email = this.email,
+        price = this.price,
         accountId = this.accountId
     )
